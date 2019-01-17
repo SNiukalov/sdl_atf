@@ -39,7 +39,7 @@ int SDLRemoteTestAdapterClient::open(const std::string& address,uint32_t port) t
   LOG_INFO("{0} adress: {1} port: {2} on remote host",__func__,address,port);
   if (connected()) {
     connection_.call(constants::open_handle,address,port);
-    LOG_INFO("{0}: Exit with SUCCESS",__func__); 
+    LOG_INFO("{0}: Exit with SUCCESS",__func__);
     return constants::error_codes::SUCCESS;
   }
   LOG_ERROR("No connection");
@@ -54,7 +54,7 @@ int SDLRemoteTestAdapterClient::close(const std::string& address,uint32_t port) 
   LOG_INFO("{0} adress: {1} port: {2} on remote host",__func__,address,port);
   if (connected()) {
     connection_.call(constants::close_handle,address,port);
-    LOG_INFO("{0}: Exit with SUCCESS",__func__); 
+    LOG_INFO("{0}: Exit with SUCCESS",__func__);
     return constants::error_codes::SUCCESS;
   }
   LOG_ERROR("No connection");
@@ -122,7 +122,7 @@ int SDLRemoteTestAdapterClient::app_start(const std::string& path,
                             name
                             )
                             .as<int>();
-    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);     
+    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);
     return result_codes;
   }
   LOG_ERROR("No connection");
@@ -140,7 +140,7 @@ int SDLRemoteTestAdapterClient::app_stop(const std::string& name) try {
                             constants::app_stop,
                             name)
                             .as<int>();
-    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);        
+    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);
     return result_codes;
   }
   LOG_ERROR("No connection");
@@ -152,14 +152,14 @@ int SDLRemoteTestAdapterClient::app_stop(const std::string& name) try {
 }
 
 std::pair<int, int> SDLRemoteTestAdapterClient::app_check_status(const std::string& name) try {
-  LOG_INFO("{0}: {1} on remote host",__func__,name);            
+  LOG_INFO("{0}: {1} on remote host",__func__,name);
   if (connected()) {
     using received = int;
     const received result_codes = connection_.call(
                                         constants::app_check_status,
                                         name)
                                         .as<received>();
-    LOG_INFO("{0}: Exit with SUCCESS",__func__);     
+    LOG_INFO("{0}: Exit with SUCCESS",__func__);
     return std::make_pair(result_codes, constants::error_codes::SUCCESS);
   }
   LOG_ERROR("No connection");
@@ -183,7 +183,7 @@ LOG_INFO("{0}: {1} on remote host \nPath to file: {2}"
                                               path,
                                               name)
                                               .as<received>();
-    LOG_INFO("{0}: Exit with SUCCESS",__func__);     
+    LOG_INFO("{0}: Exit with SUCCESS",__func__);
     return std::make_pair(bool(!resilt_code),constants::error_codes::SUCCESS);
   }
   LOG_ERROR("No connection");
@@ -209,7 +209,7 @@ int SDLRemoteTestAdapterClient::file_update(const std::string& path,
                                     content
                                     )
                                     .as<int>();
-    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);    
+    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);
     return result_codes;
   }
   LOG_ERROR("No connection");
@@ -305,7 +305,7 @@ int SDLRemoteTestAdapterClient::file_delete(const std::string& path,
                                     name
                                     )
                                     .as<int>();
-    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);    
+    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);
     return result_codes;
   }
   LOG_ERROR("No connection");
@@ -329,7 +329,7 @@ int SDLRemoteTestAdapterClient::file_backup(const std::string& path,
                             name
                             )
                             .as<int>();
-    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);    
+    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);
     return result_codes;
   }
   LOG_ERROR("No connection");
@@ -352,7 +352,7 @@ int SDLRemoteTestAdapterClient::file_restore(const std::string& path,
                             path,
                             name
                             ).as<int>();
-    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);    
+    LOG_INFO("{0}: Exit with {1}",__func__,result_codes);
     return result_codes;
   }
   LOG_ERROR("No connection");
@@ -371,7 +371,7 @@ std::pair<bool, int> SDLRemoteTestAdapterClient::folder_exists(const std::string
                                                 constants::folder_exists,
                                                 path)
                                                 .as<received>();
-    LOG_INFO("{0}: Exit with SUCCESS",__func__);     
+    LOG_INFO("{0}: Exit with SUCCESS",__func__);
     return std::make_pair(bool(!result_code),constants::error_codes::SUCCESS);
   }
   LOG_ERROR("No connection");
@@ -383,13 +383,13 @@ std::pair<bool, int> SDLRemoteTestAdapterClient::folder_exists(const std::string
 }
 
 int SDLRemoteTestAdapterClient::folder_create(const std::string& path) try {
-  LOG_INFO("{0}: {1} on remote host",__func__,path);      
+  LOG_INFO("{0}: {1} on remote host",__func__,path);
   if (connected()) {
     int result_code = connection_.call(
                                     constants::folder_create,
                                     path
                                     ).as<int>();
-    LOG_INFO("{0}: Exit with {1}",__func__,result_code);    
+    LOG_INFO("{0}: Exit with {1}",__func__,result_code);
     return result_code;
   }
   LOG_ERROR("No connection");
@@ -407,7 +407,7 @@ int SDLRemoteTestAdapterClient::folder_delete(const std::string& path) try {
                                     constants::folder_delete,
                                     path)
                                     .as<int>();
-    LOG_INFO("{0}: Exit with {1}",__func__,result_code);    
+    LOG_INFO("{0}: Exit with {1}",__func__,result_code);
     return result_code;
   }
   LOG_ERROR("No connection");

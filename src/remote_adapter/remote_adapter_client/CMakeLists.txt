@@ -72,8 +72,8 @@ target_link_libraries(${PROJECT_NAME}
                         Threads::Threads
                         $<$<BOOL:${QNXNTO}>:socket>)
 
-target_compile_definitions(${PROJECT_NAME} 
-  PRIVATE    
+target_compile_definitions(${PROJECT_NAME}
+  PRIVATE
     "ASIO_STANDALONE"
     "RPCLIB_ASIO=clmdep_asio"
     "RPCLIB_FMT=clmdep_fmt"
