@@ -87,12 +87,12 @@ void print_stack_trace(int pid){
   int cnt = bt_get_backtrace(&acc, pc, sizeof(pc)/sizeof(bt_addr_t));
   bt_sprnf_addrs(&memmap, pc, cnt, "%a\n", out, sizeof(out), 0);
   puts(out);
-  
+
   bt_unload_memmap(&memmap);
   bt_release_accessor(&acc);
 }
 
-void segfault_sigaction(int sign, siginfo_t *si, void *arg){ 
+void segfault_sigaction(int sign, siginfo_t *si, void *arg){
     print_stack_trace(si->si_pid);
     //** for continue generate core dumped *
     signal(sign, SIG_DFL);
@@ -108,7 +108,7 @@ int main(int argc, char* argv[]) {
 #ifdef __QNX__
   struct sigaction sa;
   memset(&sa, 0, sizeof(struct sigaction));
-  sigemptyset(&sa.sa_mask);  
+  sigemptyset(&sa.sa_mask);
   sa.sa_sigaction = segfault_sigaction;
   sa.sa_flags   = SA_SIGINFO;
   sigaction(SIGSEGV, &sa, NULL);
