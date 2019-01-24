@@ -27,10 +27,13 @@ local function getConfigFilesList(folderPath)
 	return resultList
 end
 
-local function buildConfiguration(base)
+local function buildConfiguration(base, environment)
 	local configurationFolderPath = "./modules/configuration"
+	if environment then
+		configurationFolderPath = configurationFolderPath .. "/" .. environment
+	end
 
-	local configurationBuilder = config_builder.ConfigurationBuilder(base)
+	local configurationBuilder = config_builder.ConfigurationBuilder(base, environment)
 
 	for _, configurationFileName in ipairs(getConfigFilesList(configurationFolderPath)) do
 		configurationBuilder:addConfiguration(configurationFileName)
@@ -42,5 +45,10 @@ end
 local config = {}
 
 buildConfiguration(config)
+
+if specific_environment then
+	buildConfiguration(config, specific_environment)
+	specific_environment = nil
+end
 
 return config

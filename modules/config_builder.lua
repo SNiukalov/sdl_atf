@@ -10,9 +10,10 @@ local CB = {
     mt = { __index = {} }
 }
 
-function CB.ConfigurationBuilder(baseConfigTable)
+function CB.ConfigurationBuilder(baseConfigTable, environment)
     local res =  {
         config = baseConfigTable,
+        environment = environment,
         configurationsList = {}
     }
     setmetatable(res, CB.mt)
@@ -30,7 +31,11 @@ local function addConfigurationFields(baseConfigTable, configTable)
 end
 
 local function loadConfiguration(self, configName)
-    local path = "configuration/" .. configName
+    local envFolderName = self.environment
+    if not envFolderName then envFolderName = "" end
+
+    local configFolderPath = "configuration/" .. envFolderName .. "/"
+    path = configFolderPath .. configName
     local isSuccess, newConfig = pcall(require, path)
     if not isSuccess then
         error("ConfigurationBuilder: Configuration " .. configName .. " was not found in "
