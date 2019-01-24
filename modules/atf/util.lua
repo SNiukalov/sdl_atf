@@ -12,7 +12,6 @@
   @license <https://github.com/smartdevicelink/sdl_core/blob/master/LICENSE>
 ]]
 local utils = require("atf.stdlib.argument_parser")
-config = require('config')
 xmlReporter = require("reporter")
 atf_logger = require("atf_logger")
 
@@ -278,7 +277,7 @@ function Util.commandLine.sdl_interfaces(str)
   config.pathToSDLInterfaces = str
 end
 
---- Overwrite property pathToSDL in configuration of ATF
+--- Overwrite property SecurityProtocol in configuration of ATF
 -- @tparam string str Value
 function Util.commandLine.security_protocol(str)
   config.SecurityProtocol = str
@@ -290,7 +289,11 @@ function Util.commandLine.parse_cmdl()
   local scriptFiles = {}
   local arguments = utils.getopt(argv, opts)
   if (arguments) then
-    if (arguments['config-file']) then Util.commandLine.config_file(arguments['config-file']) end
+    if (arguments['config-file']) then
+      Util.commandLine.config_file(arguments['config-file'])
+    else
+      config = require('config_loader')
+    end
     for argument, value in pairs(arguments) do
       if (type(argument) ~= 'number') then
         if ( argument ~= 'config-file') then
