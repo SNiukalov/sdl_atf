@@ -10,6 +10,6 @@ local config = { }
 
 --- Define path to SDL binary
 -- Example: "/home/user/sdl_build/bin"
-config.pathToSDL = "/home/db/ramdrv/b/5.0.0/p/bin"
+config.pathToSDL = "/home/db/ramdrv/b/5.0.1/p/bin"
 
 return config

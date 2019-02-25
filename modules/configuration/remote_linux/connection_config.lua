@@ -11,7 +11,9 @@ local config = { }
 --- Remote cofiguration
 config.remoteConnection = {}
 config.remoteConnection.enabled = true
-
+--- Define host for default remote connection
+config.remoteConnection.url = "172.17.0.2"
+config.remoteConnection.port = 5555
 config.hmiAdapterConfig = {}
 config.hmiAdapterConfig.hmiAdapterType = "Remote"
 
