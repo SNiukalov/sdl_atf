@@ -160,13 +160,10 @@ local function setParamValue(pContent, pParam, pValue)
   local out = ""
   local find = false
   for line in pContent:gmatch("([^\r\n]*)[\r\n]") do
-    if string.match(line, "[; ]*".. pParam ..".*=.*") ~= nil then
-      line = pParam .. " = \n"
-    end
     local ptrn = "^%s*".. pParam .. "%s*=.*"
     if string.find(line, ptrn) then
       if not find then
-        line = string.gsub(line, ptrn, pParam .. "=" .. tostring(pValue))
+        line = string.gsub(line, ptrn, pParam .. " = " .. tostring(pValue))
         find = true
       else
         line  = ";" .. line
@@ -398,7 +395,7 @@ function SDL.CRT.set(pCrtsFileName, pIsModuleCrtDefined)
 
   local function createCrtHash(pCrtFilePath)
     local p, n = getPathAndName(pCrtFilePath)
-    ATF.remoteUtils.app:ExecuteCommand("cd " .. p
+    getExecFunc()("cd " .. p
       .. " && openssl x509 -in " .. n
       .. " -hash -noout | awk '{print $0\".0\"}' | xargs ln -sf " .. n)
   end
