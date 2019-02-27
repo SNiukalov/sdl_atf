@@ -11,5 +11,6 @@ local config = { }
 --- Define path to SDL binary
 -- Example: "/home/user/sdl_build/bin"
 config.pathToSDL = "/home/qnxuser/bin"
+config.pathToSDLPolicyDB = "/tmp/policy.db"
 
 return config

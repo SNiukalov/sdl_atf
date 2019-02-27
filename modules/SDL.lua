@@ -467,7 +467,7 @@ end
 SDL.PolicyDB = {}
 
 function SDL.PolicyDB.clean()
-  deleteFile(getFilePath("policy.sqlite", SDL.INI.get("AppStorageFolder")))
+  deleteFile(getFilePath(config.pathToSDLPolicyDB, SDL.INI.get("AppStorageFolder")))
   deleteFile(getFilePath(SDL.INI.get("AppInfoStorage")))
 end
 
