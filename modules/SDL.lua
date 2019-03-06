@@ -174,15 +174,6 @@ local function setParamValue(pContent, pParam, pValue)
   return out
 end
 
-local function backup(pFilePath)
-  if config.remoteConnection.enabled then
-    local p, n = getPathAndName(pFilePath)
-    ATF.remoteUtils.file:BackupFile(p, n)
-  else
-    os.execute(" cp " .. pFilePath .. " " .. pFilePath .. "_origin" )
-  end
-end
-
 local function isFileExist(pFile)
    if config.remoteConnection.enabled then
     local p, n = getPathAndName(pFile)
@@ -208,6 +199,16 @@ local function restore(pFilePath)
       os.execute(" cp " .. pFilePath .. "_origin " .. pFilePath )
       os.execute( " rm -f " .. pFilePath .. "_origin" )
     end
+  end
+end
+
+local function backup(pFilePath)
+  restore(pFilePath)
+  if config.remoteConnection.enabled then
+    local p, n = getPathAndName(pFilePath)
+    ATF.remoteUtils.file:BackupFile(p, n)
+  else
+    os.execute(" cp " .. pFilePath .. " " .. pFilePath .. "_origin" )
   end
 end
 
