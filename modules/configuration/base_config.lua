@@ -58,5 +58,7 @@ config.reportPath = "./TestingReports"
 --- Define delays for storing sdl log -"x" before start script
 -- and +"x" after end script execution. In milliseconds(ms).
 config.x_sdllog = 100
+-- Default length of the description for test step
+config.length = 85
 
 return config

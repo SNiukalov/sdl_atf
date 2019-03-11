@@ -21,10 +21,10 @@ local console = require('console')
 -- @treturn Format Module Format
 function Format.PrintCaseResult(startCaseTime, caseName, success, errorMessage, warningMessage, timespan)
   caseName = tostring(caseName)
-  if #caseName > 85 then
-    caseName = string.sub(caseName, 1, 82) .. "..."
+  if #caseName > config.length then
+    caseName = string.sub(caseName, 1, config.length - 3) .. "..."
   else
-    caseName = caseName .. string.rep(' ', 85 - #caseName)
+    caseName = caseName .. string.rep(' ', config.length - #caseName)
   end
 
   local result
