@@ -101,6 +101,13 @@ void segfault_sigaction(int sign, siginfo_t *si, void *arg){
 }
 #endif
 
+void msleep(int millisec) {
+    struct timespec req = {0};
+    req.tv_sec = 0;
+    req.tv_nsec = millisec * 1000000L;
+    nanosleep(&req, (struct timespec *)NULL);
+}
+
 int main(int argc, char* argv[]) {
 
   UtilsManager::StopApp("SmartDeviceLink");
@@ -303,7 +310,9 @@ int main(int argc, char* argv[]) {
     srv.suppress_exceptions(true);
     // Run the server loop with 1 worker threads.
     srv.async_run();
-    std::cin.ignore();
+    while(true) {
+      msleep(10);
+    }
   } catch (std::exception& e) {
     std::cout << "Error: " << e.what() << std::endl;
     std::cout << "Exception occured" << std::endl;
