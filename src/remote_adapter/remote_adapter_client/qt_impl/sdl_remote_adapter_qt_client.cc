@@ -37,6 +37,8 @@ void SDLRemoteTestAdapterQtClient::connect() {
   LOG_INFO("{0}",__func__);
   if (isconnected_) {
     LOG_INFO("{0} Is already connected",__func__);
+    int result = remote_adapter_client_ptr_->open(tcp_params_.host,tcp_params_.port);
+    if (error_codes::SUCCESS == result) emit connected();
     return;
   }
 
