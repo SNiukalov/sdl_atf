@@ -19,23 +19,32 @@ SDLRemoteTestAdapterQtClient::SDLRemoteTestAdapterQtClient(
 {
     LOG_INFO("{0}",__func__);
     remote_adapter_client_ptr_ = client_ptr;
-    future_ = exitSignal_.get_future();
+    try{
+      future_ = exitSignal_.get_future();
+    }catch (std::future_error& e) {
+      std::cerr <<__func__<<" "<< e.what() <<"\n"<<std::flush;
+    }
 }
 
 SDLRemoteTestAdapterQtClient::~SDLRemoteTestAdapterQtClient() {
   LOG_INFO("{0}",__func__);
-  if (isconnected_) {
-    if(listener_ptr_){
+  if(listener_ptr_){
+    try{
       exitSignal_.set_value();
-      listener_ptr_->join();
+    }catch (std::future_error& e) {
+      std::cerr <<__func__<<" "<< e.what() <<"\n"<<std::flush;
     }
+    listener_ptr_->join();
+  }
+  
+  if (isconnected_) {
     remote_adapter_client_ptr_->close(tcp_params_.host,tcp_params_.port);    
   }
 }
 
 void SDLRemoteTestAdapterQtClient::connect() {
   LOG_INFO("{0}",__func__);
-  if (isconnected_) {
+  if (isconnected_ || listener_ptr_) {
     LOG_INFO("{0} Is already connected",__func__);
     int result = remote_adapter_client_ptr_->open(tcp_params_.host,tcp_params_.port);
     if (error_codes::SUCCESS == result) emit connected();
@@ -52,13 +61,23 @@ void SDLRemoteTestAdapterQtClient::connect() {
       listener_ptr_.reset(new std::thread(
            [this,&future]
             {
-                while (future.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout){                    
+                try{
+                  
+                  while (future.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout){
                     this->receive();
+                  }
+                
+                }catch(std::future_error& e){
+                  std::cerr <<"Exception in: "<<__func__<<" "<< e.what() <<"\n"<<std::flush;
+                }catch(...){
+                  std::cerr << "Unknown Exception in: " <<__func__<<"\n"<<std::flush;                  
                 }
             }
           ));
     } catch (std::exception& e) {
-      LOG_ERROR("{0}: Exception occurred: {1} ",__func__,e.what());
+      std::cerr <<__func__<<" "<< e.what() <<"\n"<<std::flush;
+    }catch(...){
+      std::cerr << "Unknown Exception in: " <<__func__<<"\n"<<std::flush;
     }
   }
 }
@@ -78,7 +97,7 @@ int SDLRemoteTestAdapterQtClient::send(const std::string& data) {
         connectionLost();
     }
     return res.second;
-  }  
+  }
   LOG_ERROR("{0}: Websocket was not connected",__func__);
   return error_codes::NO_CONNECTION;
 }
@@ -105,11 +124,6 @@ void SDLRemoteTestAdapterQtClient::connectionLost() {
   LOG_INFO("{0}",__func__);
   if (isconnected_) {
     isconnected_ = false;
-    if(listener_ptr_){
-      exitSignal_.set_value();
-      listener_ptr_->join();
-      listener_ptr_ = nullptr;
-    }
     emit disconnected();
   }
 }
